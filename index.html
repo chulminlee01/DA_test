@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이리얼트립 | 데이터 분석가 채용 과제</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- 
+      Chosen Palette: Warm Neutrals & Subtle Accent
+      - Background: #F7F9FC (Almost white, very light blue/gray)
+      - Text: #1F2937 (Dark Slate)
+      - Primary Accent: #059669 (Emerald Green for trust and growth)
+      - Secondary/Cards: #FFFFFF (White) with soft shadows
+    -->
+    <!-- 
+      Application Structure Plan: A narrative-driven, single-page vertical layout. The structure guides the candidate from understanding the high-level problem to accessing the tools and finally understanding the mission.
+      1. Hero Section: Grabs attention and sets the stage.
+      2. The Challenge Section: Immediately presents the core problem (sales decline) with an interactive chart, detailed context, and suggested analysis points. This makes the task tangible and actionable.
+      3. Data & Tools Section: Provides all necessary resources (detailed data descriptions, download link, explorable chatbot) in a clean, organized manner.
+      4. Mission & Evaluation Section: Clearly defines the candidate's task and the success criteria, with a strong emphasis on actionable insights over formal reports.
+      This top-down flow is intuitive, mirroring a real-world project briefing, which makes the task feel professional and well-structured, enhancing the candidate's experience.
+    -->
+    <!-- 
+      Visualization & Content Choices:
+      - Report Info: Monthly sales and user count trend from the CSV.
+      - Goal: Immediately and clearly communicate the core business problem of a sales decline starting in early 2025.
+      - Viz/Presentation Method: Interactive Line Chart.
+      - Interaction: Buttons to toggle between 'Sales', 'Users', and 'Both'. Tooltips on hover for precise data. A visual annotation (shaded area) highlights the period of decline.
+      - Justification: A line chart is the most effective way to show change over time. The interactivity allows candidates to explore the data at their own pace, and the visual annotation directs their focus, demonstrating thoughtful data presentation.
+      - Library/Method: Chart.js (Canvas) with chartjs-plugin-annotation.
+      - Other Content: Detailed data table descriptions are presented in clean, expandable cards for easy readability. The chatbot is embedded in an iframe as requested.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', 'Inter', sans-serif;
+            background-color: #F7F9FC;
+            color: #1F2937;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 450px;
+            max-height: 60vh;
+        }
+        .btn-active {
+            background-color: #059669;
+            color: white;
+        }
+        .btn-inactive {
+            background-color: #E5E7EB;
+            color: #374151;
+        }
+        details > summary {
+            list-style: none;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary .icon {
+            transition: transform 0.2s;
+        }
+        details[open] summary .icon {
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="https://www.myrealtrip.com" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-3">
+                <img src="https://dffoxz5he03rp.cloudfront.net/icons/logo_mrt_v2_web.svg" alt="MyRealTrip Logo" class="h-8 w-auto">
+                <span class="text-gray-600 font-medium hidden sm:inline">Data Analyst Challenge</span>
+            </a>
+            <div class="flex items-center space-x-6">
+                <a href="#challenge" class="text-gray-700 hover:text-emerald-600 transition-colors">The Challenge</a>
+                <a href="#tools" class="text-gray-700 hover:text-emerald-600 transition-colors">Data & Tools</a>
+                <a href="#mission" class="text-gray-700 hover:text-emerald-600 transition-colors">Your Mission</a>
+                <a href="https://careers.myrealtrip.com/" target="_blank" rel="noopener noreferrer" class="text-emerald-600 font-semibold hover:text-emerald-700 transition-colors">Careers</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="py-20 md:py-32 bg-white">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-gray-800 leading-tight">
+                    데이터로 여행의 미래를 밝혀주세요
+                </h1>
+                <p class="mt-6 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+                    마이리얼트립의 데이터 분석가 채용 과정에 오신 것을 환영합니다. 저희는 데이터에 기반한 의사결정을 가장 중요하게 생각합니다. 당신의 분석으로 마이리얼트립의 다음 성장 스토리를 함께 만들어갈 분을 찾고 있습니다.
+                </p>
+            </div>
+        </section>
+
+        <section id="challenge" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">The Challenge: 매출 하락의 원인을 찾아라</h2>
+                    <div class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto text-left space-y-4">
+                        <p>마이리얼트립은 해외 여행 상품(항공권, 숙소, 투어 활동)을 판매하고 있습니다. 고객들이 각 카테고리의 상품을 함께 구매하며 훌륭한 여행 경험을 즐기길 바라고 있습니다.</p>
+                        <p>그런데 2023년부터 꾸준히 성장하던 마이리얼트립은 2025년 3월, 예상치 못한 매출 하락을 겪게 됩니다. 데이터 분석을 통해 원인을 파악하고 해결책을 제안해주시기 바랍니다. (이 데이터는 실제가 아닌 가상으로 생성된 것입니다.)</p>
+                        <p class="p-4 bg-emerald-50 text-emerald-800 rounded-lg"><span class="font-bold">힌트:</span> 계절성을 고려하면 도움이 될 수 있어요 (예: 여행 성수기/비수기). 다른 패턴은 데이터에서 직접 탐색해보세요.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 sm:p-6 md:p-8 rounded-2xl shadow-lg">
+                    <div class="flex justify-center space-x-2 mb-4">
+                        <button id="showAmountBtn" class="px-4 py-2 text-sm font-semibold rounded-full transition-colors btn-active">매출액</button>
+                        <button id="showUserBtn" class="px-4 py-2 text-sm font-semibold rounded-full transition-colors btn-inactive">사용자 수</button>
+                        <button id="showBothBtn" class="px-4 py-2 text-sm font-semibold rounded-full transition-colors btn-inactive">함께 보기</button>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="salesTrendChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="mt-16 max-w-5xl mx-auto">
+                    <h3 class="text-2xl font-bold text-center text-gray-800 mb-8">분석 포인트 제안</h3>
+                    <div class="grid md:grid-cols-2 gap-6 text-left">
+                        <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                            <h4 class="font-bold text-lg text-emerald-700 flex items-start">
+                                <span class="mr-3 text-emerald-600 bg-emerald-100 rounded-full w-8 h-8 flex items-center justify-center font-black flex-shrink-0">1</span>
+                                <span>매출 추이 확인</span>
+                            </h4>
+                            <p class="mt-3 text-gray-600 pl-11">연도별, 월별 그래프를 통해 2025년 3월부터의 하락 패턴을 분석해보세요. 겨울/봄 수요 변화나 내부 요인이 있었을까요?</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                            <h4 class="font-bold text-lg text-emerald-700 flex items-start">
+                                <span class="mr-3 text-emerald-600 bg-emerald-100 rounded-full w-8 h-8 flex items-center justify-center font-black flex-shrink-0">2</span>
+                                <span>다각적 원인 탐색</span>
+                            </h4>
+                            <ul class="mt-3 text-gray-600 pl-11 list-disc list-inside space-y-1">
+                                <li><span class="font-semibold">사용자:</span> 신규/기존 사용자 변화는?</li>
+                                <li><span class="font-semibold">상품:</span> 특정 카테고리의 하락이 두드러지나요?</li>
+                                <li><span class="font-semibold">기타:</span> 계절성, 지역별 패턴도 확인해보세요.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                            <h4 class="font-bold text-lg text-emerald-700 flex items-start">
+                                <span class="mr-3 text-emerald-600 bg-emerald-100 rounded-full w-8 h-8 flex items-center justify-center font-black flex-shrink-0">3</span>
+                                <span>인사이트 연결</span>
+                            </h4>
+                            <p class="mt-3 text-gray-600 pl-11">분석 결과를 종합하여 "매출 하락은 비수기 진입과 특정 상품군의 수요 감소가 복합적으로 작용한 결과입니다."와 같이 명확한 원인을 설명해주세요.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                            <h4 class="font-bold text-lg text-emerald-700 flex items-start">
+                                <span class="mr-3 text-emerald-600 bg-emerald-100 rounded-full w-8 h-8 flex items-center justify-center font-black flex-shrink-0">4</span>
+                                <span>데이터 기반 전략 제안</span>
+                            </h4>
+                            <p class="mt-3 text-gray-600 pl-11">실현 가능한 개선 전략을 제안해주세요. 예를 들어, "성수기 조기 예약 프로모션 강화" 또는 "젊은 층 타겟 신규 투어 상품 개발" 등이 있습니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tools" class="py-16 md:py-24 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Your Tools: 데이터셋과 AI 분석 파트너</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
+                        분석에 필요한 가상 데이터셋과, 데이터에 대해 자유롭게 질문할 수 있는 AI 챗봇을 제공합니다. 주어진 도구를 활용해 숨겨진 인사이트를 발견해보세요.
+                    </p>
+                </div>
+                
+                <div class="max-w-4xl mx-auto text-center mb-12">
+                     <a href="https://drive.google.com/file/d/1QkvCXR86f-bYm4H-Tzls_5EFcR-TD61p/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="inline-block bg-emerald-600 text-white font-bold text-lg px-8 py-4 rounded-lg hover:bg-emerald-700 transition-transform transform hover:scale-105 shadow-lg">
+                        <span class="mr-2">⬇️</span> 데이터셋 다운로드 (.zip)
+                    </a>
+                </div>
+
+                <h3 class="text-2xl font-bold text-center text-gray-700 mb-8">분석용 가상 데이터 상세 설명</h3>
+                <div class="space-y-4 max-w-4xl mx-auto">
+                    <!-- MRT_SALES -->
+                    <details class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                        <summary class="p-5 cursor-pointer flex justify-between items-center">
+                            <h4 class="font-bold text-lg text-emerald-700">1. MRT_SALES (매출 정보)</h4>
+                            <div class="icon text-emerald-700 font-semibold text-2xl">+</div>
+                        </summary>
+                        <div class="p-5 border-t border-gray-200 bg-white">
+                            <p class="text-gray-600 mb-4">고객 거래의 상세 내역. 어떤 상품이 언제, 누구에게 판매되었는지 파악할 수 있습니다.</p>
+                            <ul class="space-y-2 text-sm text-gray-700">
+                                <li><strong>travel_id</strong> (STRING): 고유 여행 ID</li>
+                                <li><strong>order_id</strong> (STRING): 고유 주문 ID</li>
+                                <li><strong>user_id</strong> (INT64): 고유 사용자 ID</li>
+                                <li><strong>product_id</strong> (STRING): 고유 상품 ID</li>
+                                <li><strong>order_date</strong> (DATE): 주문 날짜 (2023-01-01 ~ 2025-08-04)</li>
+                                <li><strong>amount</strong> (INT64): 결제 금액</li>
+                                <li><strong>is_cancellation</strong> (BOOLEAN): 취소 여부</li>
+                                <li><strong>category_nm</strong> (STRING): 상품 카테고리 (항공권, 숙소, 투어/티켓)</li>
+                                <li><strong>lead_time</strong> (INT64): 주문부터 여행 시작까지 기간(일)</li>
+                                <li><strong>travel_start_date</strong> (DATE): 실제 여행 시작 날짜</li>
+                            </ul>
+                        </div>
+                    </details>
+                    <!-- MRT_USERS -->
+                    <details class="bg-white border border-gray-200 rounded-lg shadow-sm">
+                        <summary class="p-5 cursor-pointer flex justify-between items-center">
+                            <h4 class="font-bold text-lg text-emerald-700">2. MRT_USERS (사용자 정보)</h4>
+                            <div class="icon text-emerald-700 font-semibold text-2xl">+</div>
+                        </summary>
+                        <div class="p-5 border-t border-gray-200 bg-white">
+                            <p class="text-gray-600 mb-4">사용자 기본 정보와 요약 통계. 매출 하락 시 특정 사용자 그룹의 변화를 분석할 수 있습니다.</p>
+                             <ul class="space-y-2 text-sm text-gray-700">
+                                <li><strong>user_id</strong> (INT64): 고유 사용자 ID</li>
+                                <li><strong>join_date</strong> (DATE): 가입 날짜 (2020-01-01 ~ 2025-08-04)</li>
+                                <li><strong>number_of_total_purchased</strong> (INT64): 가입 후 총 구매 건수</li>
+                                <li><strong>age</strong> (INT64): 연령 (20~80세)</li>
+                                <li><strong>number_of_reviews_written</strong> (INT64): 작성한 리뷰 수</li>
+                            </ul>
+                        </div>
+                    </details>
+                    <!-- MRT_PRODUCTS -->
+                    <details class="bg-white border border-gray-200 rounded-lg shadow-sm">
+                        <summary class="p-5 cursor-pointer flex justify-between items-center">
+                            <h4 class="font-bold text-lg text-emerald-700">3. MRT_PRODUCTS (상품 정보)</h4>
+                            <div class="icon text-emerald-700 font-semibold text-2xl">+</div>
+                        </summary>
+                        <div class="p-5 border-t border-gray-200 bg-white">
+                            <p class="text-gray-600 mb-4">판매 중인 상품의 카테고리, 위치, 평점 등 상세 정보. 특정 상품군의 부진을 파악할 수 있습니다.</p>
+                             <ul class="space-y-2 text-sm text-gray-700">
+                                <li><strong>product_id</strong> (STRING): 고유 상품 ID</li>
+                                <li><strong>product_title</strong> (STRING): 상품 제목</li>
+                                <li><strong>city_nm</strong> (STRING): 도시</li>
+                                <li><strong>country_nm</strong> (STRING): 국가</li>
+                                <li><strong>number_of_reviews</strong> (INT64): 리뷰 수</li>
+                                <li><strong>average_score</strong> (FLOAT64): 평균 평점 (리뷰 없을 시 0.0)</li>
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+
+
+                <div class="mt-16">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold text-gray-700 inline-flex items-center">
+                            <svg class="w-8 h-8 mr-3 text-emerald-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
+                            </svg>
+                            데이터 탐색용 AI 챗봇
+                        </h3>
+                    </div>
+                     <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">데이터셋의 구조나 내용에 대해 궁금한 점이 있다면, 아래 AI 챗봇에게 자유롭게 질문해보세요. <br/>(예: "MRT_SALES 테이블의 travel_id에 대해서 더 자세히 알 수 있을까?")</p>
+                    <div class="rounded-2xl shadow-2xl overflow-hidden border-4 border-white">
+                        <iframe
+                            src="https://udify.app/chatbot/LY7ICFHedAAbiPvr"
+                            style="width: 100%; height: 100%; min-height: 700px"
+                            frameborder="0"
+                            allow="microphone">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="mission" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Your Mission: Insights & Actions</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
+                        당신의 최종 목표는 분석 결과를 바탕으로 실제 서비스와 프로세스를 개선할 '액션'을 제안하는 것입니다.
+                    </p>
+                </div>
+                
+                <div class="max-w-3xl mx-auto bg-emerald-50 border-l-4 border-emerald-500 text-emerald-800 p-6 rounded-r-lg mb-12 shadow">
+                    <h3 class="font-bold text-xl mb-2">마이리얼트립의 데이터 철학</h3>
+                    <p class="italic">"마이리얼트립에서는 '분석 보고서'를 쓰지 않습니다. 데이터의 진정한 가치는 보고서가 아니라, 이를 통해 개선된 서비스와 프로세스에 있다고 생각합니다."</p>
+                </div>
+
+                <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8 text-center">
+                    <div class="bg-gray-50 p-8 rounded-lg shadow-sm border border-gray-100">
+                        <h4 class="font-bold text-xl text-emerald-700">1. 원인 분석 (Problem Discovery)</h4>
+                        <p class="mt-3 text-gray-600">데이터를 깊이 있게 탐색하여 '왜' 매출이 감소했는지에 대한 가설을 세우고 검증해주세요. '어떤 문제'가 있는지, '어떻게' 그 문제를 발견했는지 과정을 보여주세요.</p>
+                    </div>
+                    <div class="bg-gray-50 p-8 rounded-lg shadow-sm border border-gray-100">
+                        <h4 class="font-bold text-xl text-emerald-700">2. 개선 전략 (Actionable Suggestion)</h4>
+                        <p class="mt-3 text-gray-600">분석으로 발견한 문제를 '어떻게 해결'할 수 있을지 구체적인 액션 아이템을 제안해주세요. 데이터 기반의 예측 효과를 포함하면 더 좋습니다.</p>
+                    </div>
+                </div>
+                <div class="text-center mt-12 bg-white p-8 rounded-lg max-w-4xl mx-auto shadow-md">
+                    <h3 class="text-xl font-semibold text-gray-700">제출물 가이드</h3>
+                    <p class="mt-2 text-gray-600">어떤 포맷이든 괜찮습니다. 분석 코드, 그래프, 장황한 설명보다는 당신의 '인사이트'와 '실행 계획'을 명확하게 전달하는 데 집중해주세요.</p>
+                     <h3 class="text-xl font-semibold text-gray-700 mt-6">평가 기준</h3>
+                    <p class="mt-2 text-gray-600">문제 해결 능력, 데이터 핸들링 및 시각화, 비즈니스 임팩트, 논리적 커뮤니케이션 능력을 종합적으로 평가합니다.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2025 MyRealTrip. All Rights Reserved.</p>
+            <p class="text-sm text-gray-400 mt-2">This is a fictional take-home assignment for recruitment purposes.</p>
+        </div>
+    </footer>
+
+    <script>
+        const csvData = `month,amount,user_cnt
+2023-01-01,5251683200,2217
+2023-02-01,5077090300,2060
+2023-03-01,1719839000,1016
+2023-04-01,1663145900,1030
+2023-05-01,2029298100,1119
+2023-06-01,5265984800,2323
+2023-07-01,5684095400,2443
+2023-08-01,5557238300,2485
+2023-09-01,1537708000,983
+2023-10-01,1765997200,1053
+2023-11-01,1652338900,973
+2023-12-01,5590689700,2383
+2024-01-01,9664067100,3985
+2024-02-01,9330445000,3852
+2024-03-01,2873626200,1798
+2024-04-01,2816906800,1762
+2024-05-01,3082425800,1787
+2024-06-01,9477139400,3917
+2024-07-01,9559159000,3907
+2024-08-01,9847701800,4042
+2024-09-01,2893177500,1715
+2024-10-01,2929327100,1745
+2024-11-01,2912110500,1692
+2024-12-01,9812506800,3959
+2025-01-01,16801578400,6418
+2025-02-01,15110488500,5894
+2025-03-01,718201100,1085
+2025-04-01,718526200,1075
+2025-05-01,715760500,1164
+2025-06-01,6013354100,4327
+2025-07-01,5158094100,4241
+2025-08-01,667351800,579`;
+
+        function parseCSV(data) {
+            const lines = data.trim().split('\n');
+            const headers = lines[0].split(',');
+            return lines.slice(1).map(line => {
+                if (line.trim() === '') return null;
+                const values = line.split(',');
+                return headers.reduce((obj, header, index) => {
+                    obj[header.trim()] = values[index].trim();
+                    return obj;
+                }, {});
+            }).filter(row => row);
+        }
+
+        const salesData = parseCSV(csvData);
+
+        const labels = salesData.map(row => {
+            const date = new Date(row.month);
+            return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}`;
+        });
+        const amountData = salesData.map(row => parseFloat(row.amount) / 100000000); 
+        const userData = salesData.map(row => parseInt(row.user_cnt));
+
+        const declineStartIndex = labels.indexOf('2025.03');
+
+        const ctx = document.getElementById('salesTrendChart').getContext('2d');
+        const salesTrendChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: '월 매출액 (억 원)',
+                        data: amountData,
+                        borderColor: '#059669',
+                        backgroundColor: 'rgba(5, 150, 105, 0.1)',
+                        yAxisID: 'yAmount',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 2,
+                        pointHoverRadius: 6,
+                    },
+                    {
+                        label: '월 사용자 수',
+                        data: userData,
+                        borderColor: '#F97316',
+                        backgroundColor: 'rgba(249, 115, 22, 0.1)',
+                        yAxisID: 'yUser',
+                        tension: 0.3,
+                        pointRadius: 2,
+                        pointHoverRadius: 6,
+                        hidden: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    if (context.dataset.yAxisID === 'yAmount') {
+                                       label += context.parsed.y.toFixed(2) + '억 원';
+                                    } else {
+                                       label += context.parsed.y.toLocaleString() + '명';
+                                    }
+                                }
+                                return label;
+                            }
+                        }
+                    },
+                    legend: {
+                        position: 'top',
+                    },
+                    annotation: {
+                        annotations: {
+                            box1: {
+                                type: 'box',
+                                xMin: declineStartIndex,
+                                xMax: labels.length -1,
+                                backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                                borderColor: 'rgba(239, 68, 68, 0.3)',
+                                borderWidth: 1,
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false,
+                        },
+                        ticks: {
+                           autoSkip: true,
+                           maxTicksLimit: 15
+                        }
+                    },
+                    yAmount: {
+                        type: 'linear',
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: '매출액 (억 원)'
+                        },
+                         ticks: {
+                            callback: function(value) {
+                                return value + '억';
+                            }
+                        }
+                    },
+                    yUser: {
+                        type: 'linear',
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: '사용자 수 (명)'
+                        },
+                        grid: {
+                            drawOnChartArea: false, 
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value.toLocaleString() + '명';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        const showAmountBtn = document.getElementById('showAmountBtn');
+        const showUserBtn = document.getElementById('showUserBtn');
+        const showBothBtn = document.getElementById('showBothBtn');
+        const buttons = [showAmountBtn, showUserBtn, showBothBtn];
+
+        function updateChartVisibility(showAmount, showUser) {
+            salesTrendChart.data.datasets[0].hidden = !showAmount;
+            salesTrendChart.data.datasets[1].hidden = !showUser;
+            salesTrendChart.options.scales.yAmount.display = showAmount;
+            salesTrendChart.options.scales.yUser.display = showUser;
+            salesTrendChart.update();
+        }
+
+        function setActiveButton(activeBtn) {
+            buttons.forEach(btn => {
+                btn.classList.remove('btn-active');
+                btn.classList.add('btn-inactive');
+            });
+            activeBtn.classList.remove('btn-inactive');
+            activeBtn.classList.add('btn-active');
+        }
+
+        showAmountBtn.addEventListener('click', () => {
+            updateChartVisibility(true, false);
+            setActiveButton(showAmountBtn);
+        });
+
+        showUserBtn.addEventListener('click', () => {
+            updateChartVisibility(false, true);
+            setActiveButton(showUserBtn);
+        });
+
+        showBothBtn.addEventListener('click', () => {
+            updateChartVisibility(true, true);
+            setActiveButton(showBothBtn);
+        });
+        
+        updateChartVisibility(true, false);
+
+    </script>
+</body>
+</html>
+
