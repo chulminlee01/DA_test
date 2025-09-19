@@ -10,14 +10,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- 
+    <!--
       Chosen Palette: Warm Neutrals & Subtle Accent
       - Background: #F7F9FC (Almost white, very light blue/gray)
       - Text: #1F2937 (Dark Slate)
       - Primary Accent: #059669 (Emerald Green for trust and growth)
       - Secondary/Cards: #FFFFFF (White) with soft shadows
     -->
-    <!-- 
+    <!--
       Application Structure Plan: A narrative-driven, single-page vertical layout. The structure guides the candidate from understanding the high-level problem to accessing the tools and finally understanding the mission.
       1. Hero Section: Grabs attention and sets the stage.
       2. The Challenge Section: Immediately presents the core problem (sales decline) with an interactive chart, detailed context, and suggested analysis points. This makes the task tangible and actionable.
@@ -25,7 +25,7 @@
       4. Mission & Evaluation Section: Clearly defines the candidate's task and the success criteria, with a strong emphasis on actionable insights over formal reports.
       This top-down flow is intuitive, mirroring a real-world project briefing, which makes the task feel professional and well-structured, enhancing the candidate's experience.
     -->
-    <!-- 
+    <!--
       Visualization & Content Choices:
       - Report Info: Monthly sales and user count trend from the CSV.
       - Goal: Immediately and clearly communicate the core business problem of a sales decline starting in early 2025.
@@ -71,10 +71,16 @@
         details[open] summary .icon {
             transform: rotate(45deg);
         }
+        .report-iframe {
+            width: 100%;
+            height: 800px;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body class="antialiased">
-
     <header class="bg-white/80 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="https://www.myrealtrip.com" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-3">
@@ -89,7 +95,6 @@
             </div>
         </nav>
     </header>
-
     <main>
         <section id="hero" class="py-20 md:py-32 bg-white">
             <div class="container mx-auto px-6 text-center">
@@ -101,7 +106,6 @@
                 </p>
             </div>
         </section>
-
         <section id="challenge" class="py-16 md:py-24">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-12">
@@ -112,7 +116,6 @@
                         <p class="p-4 bg-emerald-50 text-emerald-800 rounded-lg"><span class="font-bold">힌트:</span> 계절성을 고려하면 도움이 될 수 있어요 (예: 여행 성수기/비수기). 다른 패턴은 데이터에서 직접 탐색해보세요.</p>
                     </div>
                 </div>
-
                 <div class="bg-white p-4 sm:p-6 md:p-8 rounded-2xl shadow-lg">
                     <div class="flex justify-center space-x-2 mb-4">
                         <button id="showAmountBtn" class="px-4 py-2 text-sm font-semibold rounded-full transition-colors btn-active">매출액</button>
@@ -123,7 +126,6 @@
                         <canvas id="salesTrendChart"></canvas>
                     </div>
                 </div>
-
                 <div class="mt-16 max-w-5xl mx-auto">
                     <h3 class="text-2xl font-bold text-center text-gray-800 mb-8">분석 포인트 제안</h3>
                     <div class="grid md:grid-cols-2 gap-6 text-left">
@@ -163,7 +165,6 @@
                 </div>
             </div>
         </section>
-
         <section id="tools" class="py-16 md:py-24 bg-gray-50">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-12">
@@ -172,13 +173,12 @@
                         분석에 필요한 가상 데이터셋과, 데이터에 대해 자유롭게 질문할 수 있는 AI 챗봇을 제공합니다. 주어진 도구를 활용해 숨겨진 인사이트를 발견해보세요.
                     </p>
                 </div>
-                
+               
                 <div class="max-w-4xl mx-auto text-center mb-12">
                      <a href="https://drive.google.com/file/d/1QkvCXR86f-bYm4H-Tzls_5EFcR-TD61p/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="inline-block bg-emerald-600 text-white font-bold text-lg px-8 py-4 rounded-lg hover:bg-emerald-700 transition-transform transform hover:scale-105 shadow-lg">
                         <span class="mr-2">⬇️</span> 데이터셋 다운로드 (.zip)
                     </a>
                 </div>
-
                 <h3 class="text-2xl font-bold text-center text-gray-700 mb-8">분석용 가상 데이터 상세 설명</h3>
                 <div class="space-y-4 max-w-4xl mx-auto">
                     <!-- MRT_SALES -->
@@ -239,8 +239,6 @@
                         </div>
                     </details>
                 </div>
-
-
                 <div class="mt-16">
                     <div class="text-center mb-8">
                         <h3 class="text-2xl font-bold text-gray-700 inline-flex items-center">
@@ -262,7 +260,6 @@
                 </div>
             </div>
         </section>
-
         <section id="mission" class="py-16 md:py-24 bg-white">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-12">
@@ -271,12 +268,11 @@
                         당신의 최종 목표는 분석 결과를 바탕으로 실제 서비스와 프로세스를 개선할 '액션'을 제안하는 것입니다.
                     </p>
                 </div>
-                
+               
                 <div class="max-w-3xl mx-auto bg-emerald-50 border-l-4 border-emerald-500 text-emerald-800 p-6 rounded-r-lg mb-12 shadow">
                     <h3 class="font-bold text-xl mb-2">마이리얼트립의 데이터 철학</h3>
                     <p class="italic">"마이리얼트립에서는 '분석 보고서'를 쓰지 않습니다. 데이터의 진정한 가치는 보고서가 아니라, 이를 통해 개선된 서비스와 프로세스에 있다고 생각합니다."</p>
                 </div>
-
                 <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8 text-center">
                     <div class="bg-gray-50 p-8 rounded-lg shadow-sm border border-gray-100">
                         <h4 class="font-bold text-xl text-emerald-700">1. 원인 분석 (Problem Discovery)</h4>
@@ -290,20 +286,39 @@
                 <div class="text-center mt-12 bg-white p-8 rounded-lg max-w-4xl mx-auto shadow-md">
                     <h3 class="text-xl font-semibold text-gray-700">제출물 가이드</h3>
                     <p class="mt-2 text-gray-600">어떤 포맷이든 괜찮습니다. 분석 코드, 그래프, 장황한 설명보다는 당신의 '인사이트'와 '실행 계획'을 명확하게 전달하는 데 집중해주세요.</p>
+                    <div class="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg text-sm">
+                        <p class="text-gray-600 mb-2">이 웹페이지가 어떻게 만들어졌는지 궁금하세요?</p>
+                        <a href="#reportguide" class="inline-block bg-gray-600 text-white font-semibold px-4 py-2 rounded hover:bg-gray-700 transition-colors">가이드 탐색하기</a>
+                    </div>
                      <h3 class="text-xl font-semibold text-gray-700 mt-6">평가 기준</h3>
                     <p class="mt-2 text-gray-600">문제 해결 능력, 데이터 핸들링 및 시각화, 비즈니스 임팩트, 논리적 커뮤니케이션 능력을 종합적으로 평가합니다.</p>
                 </div>
             </div>
         </section>
+        <section id="reportguide" class="py-16 md:py-24 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">가이드: 인터랙티브 HTML 생성</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
+                        AI를 활용해 간단한 인터랙티브 HTML을 만드는 방법입니다. Netlify에 게시하는 팁도 포함되어 있어요.
+                    </p>
+                </div>
+                <div class="max-w-6xl mx-auto">
+                    <iframe 
+                        src="https://reportguide.netlify.app/" 
+                        class="report-iframe"
+                        title="Interactive Report Guide">
+                    </iframe>
+                </div>
+            </div>
+        </section>
     </main>
-
     <footer class="bg-gray-800 text-white py-8">
         <div class="container mx-auto px-6 text-center">
             <p>&copy; 2025 MyRealTrip. All Rights Reserved.</p>
             <p class="text-sm text-gray-400 mt-2">This is a fictional take-home assignment for recruitment purposes.</p>
         </div>
     </footer>
-
     <script>
         const csvData = `month,amount,user_cnt
 2023-01-01,5251683200,2217
@@ -338,7 +353,6 @@
 2025-06-01,6013354100,4327
 2025-07-01,5158094100,4241
 2025-08-01,667351800,579`;
-
         function parseCSV(data) {
             const lines = data.trim().split('\n');
             const headers = lines[0].split(',');
@@ -351,18 +365,14 @@
                 }, {});
             }).filter(row => row);
         }
-
         const salesData = parseCSV(csvData);
-
         const labels = salesData.map(row => {
             const date = new Date(row.month);
             return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}`;
         });
-        const amountData = salesData.map(row => parseFloat(row.amount) / 100000000); 
+        const amountData = salesData.map(row => parseFloat(row.amount) / 100000000);
         const userData = salesData.map(row => parseInt(row.user_cnt));
-
         const declineStartIndex = labels.indexOf('2025.03');
-
         const ctx = document.getElementById('salesTrendChart').getContext('2d');
         const salesTrendChart = new Chart(ctx, {
             type: 'line',
@@ -466,7 +476,7 @@
                             text: '사용자 수 (명)'
                         },
                         grid: {
-                            drawOnChartArea: false, 
+                            drawOnChartArea: false,
                         },
                         ticks: {
                             callback: function(value) {
@@ -477,12 +487,11 @@
                 }
             }
         });
-        
+       
         const showAmountBtn = document.getElementById('showAmountBtn');
         const showUserBtn = document.getElementById('showUserBtn');
         const showBothBtn = document.getElementById('showBothBtn');
         const buttons = [showAmountBtn, showUserBtn, showBothBtn];
-
         function updateChartVisibility(showAmount, showUser) {
             salesTrendChart.data.datasets[0].hidden = !showAmount;
             salesTrendChart.data.datasets[1].hidden = !showUser;
@@ -490,7 +499,6 @@
             salesTrendChart.options.scales.yUser.display = showUser;
             salesTrendChart.update();
         }
-
         function setActiveButton(activeBtn) {
             buttons.forEach(btn => {
                 btn.classList.remove('btn-active');
@@ -499,25 +507,20 @@
             activeBtn.classList.remove('btn-inactive');
             activeBtn.classList.add('btn-active');
         }
-
         showAmountBtn.addEventListener('click', () => {
             updateChartVisibility(true, false);
             setActiveButton(showAmountBtn);
         });
-
         showUserBtn.addEventListener('click', () => {
             updateChartVisibility(false, true);
             setActiveButton(showUserBtn);
         });
-
         showBothBtn.addEventListener('click', () => {
             updateChartVisibility(true, true);
             setActiveButton(showBothBtn);
         });
-        
+       
         updateChartVisibility(true, false);
-
     </script>
 </body>
 </html>
-
