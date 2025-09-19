@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인터랙티브 가이드: AI 기반 HTML 보고서 제작</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Chosen Palette: Warm Neutrals & Subtle Accent
+         - Background: #F7F9FC
+         - Text: #1F2937
+         - Primary Accent: #059669 (Emerald Green)
+         - Secondary/Cards: #FFFFFF
+        */
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #F7F9FC;
+            color: #1F2937;
+        }
+        .sidebar-link {
+            transition: all 0.2s ease-in-out;
+            color: #475569; /* slate-600 */
+        }
+        .sidebar-link.active, .sidebar-link:hover {
+            background-color: #059669; /* Emerald-600 */
+            color: white;
+            transform: translateX(4px);
+        }
+        .code-block {
+            background-color: #1e293b; /* slate-800 */
+            color: #e2e8f0; /* slate-200 */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .preview-frame {
+            border: 1px solid #e2e8f0; /* slate-200 */
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+        }
+        .step-content { display: none; }
+        .step-content.active { display: block; }
+        .action-button {
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        }
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <!-- Sidebar Navigation -->
+        <aside class="w-full md:w-64 bg-white p-6 flex-shrink-0 border-r border-slate-200">
+            <h1 class="text-2xl font-bold text-[#1F2937] mb-8">AI 활용 가이드</h1>
+            <nav class="space-y-4" id="sidebar-nav">
+                <a href="#step1" data-step="1" class="sidebar-link block p-3 rounded-md font-bold active">1. 분석 내용 작성</a>
+                <a href="#step2" data-step="2" class="sidebar-link block p-3 rounded-md font-bold">2. AI로 생성하기</a>
+                <a href="#step3" data-step="3" class="sidebar-link block p-3 rounded-md font-bold">3. 다듬고 개선하기</a>
+                <a href="#step4" data-step="4" class="sidebar-link block p-3 rounded-md font-bold">4. 보고서 게시하기</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6 sm:p-8 md:p-10">
+            <!-- Step 1: Write Your Analysis -->
+            <section id="step-1-content" class="step-content active">
+                <h2 class="text-3xl font-bold text-[#1F2937] mb-2">1단계: 분석 내용 작성</h2>
+                <p class="text-slate-600 mb-6">가장 먼저, 분석한 내용을 그대로 작성하세요. 서식에 신경 쓰지 말고 핵심 정보에만 집중하세요. 이 내용이 AI에게 제공될 기본 자료가 됩니다.</p>
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                    <h3 class="font-bold text-lg mb-2">샘플 보고서 내용:</h3>
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-md text-slate-700">
+                        <p class="font-mono text-sm leading-relaxed">
+                            **분기별 매출 보고서 - 2025년 3분기**
+                            <br><br>
+                            요약: 3분기 실적은 2분기 대비 총매출이 15% 증가하며 매우 긍정적이었습니다. 이러한 성장은 B 제품의 성공적인 마케팅 캠페인 덕분입니다.
+                            <br><br>
+                            제품별 매출 분석:
+                            <br>
+                            - 제품 A: 4,500만 원 (2분기 대비 10% 증가)
+                            <br>
+                            - 제품 B: 3,000만 원 (2분기 대비 25% 증가)
+                            <br>
+                            - 제품 C: 2,500만 원 (2분기 대비 8% 증가)
+                            <br><br>
+                            결론: B 제품에 대한 타겟 디지털 광고가 높은 투자 수익률을 기록했습니다. 4분기에는 이 전략을 A와 C 제품에도 확대 적용할 것을 권장합니다.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 2: Generate with AI -->
+            <section id="step-2-content" class="step-content">
+                <h2 class="text-3xl font-bold text-[#1F2937] mb-2">2단계: AI로 생성하기</h2>
+                <p class="text-slate-600 mb-6">이제 작성한 내용을 Gemini나 GPT와 같은 AI에 입력하세요. 명확한 프롬프트를 사용해 완전한 단일 HTML 파일 보고서를 만들어달라고 요청하세요.</p>
+                
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 mb-6">
+                    <h3 class="font-bold text-lg mb-2">AI에게 보낼 프롬프트:</h3>
+                    <div class="code-block text-sm">전문 웹 개발자처럼 행동해줘. 다음 분석 보고서를 하나의 완전한 HTML 파일로 변환해줘. 스타일링은 Tailwind CSS를 사용하고, 깔끔하고 전문적이며 반응형으로 만들어줘.</div>
+                </div>
+
+                <div class="text-center my-8">
+                     <button id="generate-btn" class="action-button bg-[#059669] text-white font-bold py-3 px-6 rounded-lg">AI 생성 시뮬레이션</button>
+                </div>
+
+                <div id="generation-output" class="hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="font-bold text-lg mb-2">생성된 HTML 코드:</h3>
+                            <div id="code-output" class="code-block"></div>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg mb-2">실시간 미리보기:</h3>
+                            <iframe id="preview-frame" class="w-full h-96 preview-frame bg-white"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 3: Refine & Enhance -->
+            <section id="step-3-content" class="step-content">
+                <h2 class="text-3xl font-bold text-[#1F2937] mb-2">3단계: 다듬고 개선하기</h2>
+                <p class="text-slate-600 mb-6">초안은 훌륭한 시작점입니다. 이제 더 개선해 봅시다. AI에게 차트를 추가하거나 테마를 변경하는 등 구체적인 수정을 요청하세요. 아래 버튼을 클릭해 이 과정을 시뮬레이션해 보세요.</p>
+                
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 mb-6">
+                    <h3 class="font-bold text-lg mb-2">개선 요청 프롬프트 예시:</h3>
+                    <div class="flex flex-wrap gap-4">
+                        <button id="refine-chart-btn" class="action-button bg-[#059669] text-white font-bold py-2 px-4 rounded-lg">"막대 차트 추가해줘"</button>
+                        <button id="refine-theme-btn" class="action-button border border-[#059669] text-[#059669] bg-white font-bold py-2 px-4 rounded-lg">"가독성 높은 테마로 변경"</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="font-bold text-lg mb-2">개선된 HTML 코드:</h3>
+                        <div id="refined-code-output" class="code-block"><p class="text-slate-400">개선된 코드가 여기에 표시됩니다...</p></div>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg mb-2">실시간 미리보기:</h3>
+                        <iframe id="refined-preview-frame" class="w-full h-96 preview-frame bg-white"></iframe>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 4: Publish Report -->
+            <section id="step-4-content" class="step-content">
+                <h2 class="text-3xl font-bold text-[#1F2937] mb-2">4단계: 보고서 게시하기</h2>
+                <p class="text-slate-600 mb-6">최종 HTML 코드가 준비되면 `index.html` 파일로 저장하세요. Netlify를 사용하면 온라인에 게시하는 것이 매우 간단합니다.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                        <h3 class="font-bold text-xl text-[#1F2937] mb-3">방법 A: 드래그 앤 드롭 (가장 쉬운 방법)</h3>
+                        <ol class="list-decimal list-inside space-y-2 text-slate-600">
+                            <li>컴퓨터에 새 폴더를 만드세요 (예: `내-보고서`).</li>
+                            <li>폴더 안에 `index.html` 파일을 넣으세요.</li>
+                            <li><a href="https://app.netlify.com" target="_blank" class="text-[#059669] font-bold hover:underline">Netlify</a> 사이트로 이동하여 로그인하세요.</li>
+                            <li>`내-보고서` 폴더 전체를 Netlify 대시보드로 드래그하세요.</li>
+                            <li>보고서가 즉시 온라인에 게시됩니다!</li>
+                        </ol>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                        <h3 class="font-bold text-xl text-[#1F2937] mb-3">방법 B: GitHub 연동 (자동화)</h3>
+                        <ol class="list-decimal list-inside space-y-2 text-slate-600">
+                            <li>프로젝트 폴더를 GitHub에 새로운 레포지토리로 푸시하세요.</li>
+                            <li>Netlify에서 "Import an existing project"를 선택하세요.</li>
+                            <li>GitHub에 연결하고 해당 레포지토리를 선택하세요.</li>
+                            <li>Netlify가 자동으로 사이트를 빌드하고 배포합니다.</li>
+                            <li>이후 GitHub에 푸시할 때마다 사이트가 자동 업데이트됩니다.</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const initialHtmlCode = `<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>분기별 매출 보고서</title>
+    <script src="https://cdn.tailwindcss.com"><\/script>
+</head>
+<body style="background-color: #F7F9FC; color: #1F2937; font-family: sans-serif;">
+    <div class="max-w-3xl mx-auto p-8">
+        <header class="mb-8 border-b pb-4 border-slate-200">
+            <h1 class="text-4xl font-bold">분기별 매출 보고서</h1>
+            <p class="text-lg text-slate-600">2025년 3분기 실적 분석</p>
+        </header>
+        <main>
+            <section class="mb-8">
+                <h2 class="text-2xl font-bold mb-4">핵심 요약</h2>
+                <p class="text-slate-700 leading-relaxed">3분기 실적은 2분기 대비 총매출이 15% 증가하며 매우 긍정적이었습니다. 이러한 성장은 B 제품의 성공적인 마케팅 캠페인 덕분입니다.</p>
+            </section>
+            <section class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                 <h2 class="text-2xl font-bold mb-4">제품별 매출 분석</h2>
+                 <ul class="space-y-3 text-lg">
+                    <li><strong>제품 A:</strong> 4,500만 원 <span class="text-sm font-semibold text-green-600">(+10%)</span></li>
+                    <li><strong>제품 B:</strong> 3,000만 원 <span class="text-sm font-semibold text-green-600">(+25%)</span></li>
+                    <li><strong>제품 C:</strong> 2,500만 원 <span class="text-sm font-semibold text-green-600">(+8%)</span></li>
+                 </ul>
+            </section>
+             <section class="mt-8">
+                <h2 class="text-2xl font-bold mb-4">결론 및 제언</h2>
+                <p class="text-slate-700 leading-relaxed">B 제품에 대한 타겟 디지털 광고가 높은 투자 수익률을 기록했습니다. 4분기에는 이 전략을 A와 C 제품에도 확대 적용할 것을 권장합니다.</p>
+            </section>
+        </main>
+    </div>
+</body>
+</html>`;
+
+    const chartHtmlCode = `<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>분기별 매출 보고서</title>
+    <script src="https://cdn.tailwindcss.com"><\/script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"><\/script>
+</head>
+<body style="background-color: #F7F9FC; color: #1F2937; font-family: sans-serif;">
+    <div class="max-w-3xl mx-auto p-8">
+        <header class="mb-8 border-b pb-4 border-slate-200">
+            <h1 class="text-4xl font-bold">분기별 매출 보고서</h1>
+            <p class="text-lg text-slate-600">2025년 3분기 실적 분석</p>
+        </header>
+        <main>
+            <section class="mb-8">
+                <h2 class="text-2xl font-bold mb-4">핵심 요약</h2>
+                <p class="text-slate-700 leading-relaxed">3분기 실적은 2분기 대비 총매출이 15% 증가하며 매우 긍정적이었습니다. 이러한 성장은 B 제품의 성공적인 마케팅 캠페인 덕분입니다.</p>
+            </section>
+            <section class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                 <h2 class="text-2xl font-bold mb-4">제품별 매출 분석</h2>
+                 <div class="w-full h-80"><canvas id="salesChart"><\/canvas></div>
+            </section>
+             <section class="mt-8">
+                <h2 class="text-2xl font-bold mb-4">결론 및 제언</h2>
+                <p class="text-slate-700 leading-relaxed">B 제품에 대한 타겟 디지털 광고가 높은 투자 수익률을 기록했습니다. 4분기에는 이 전략을 A와 C 제품에도 확대 적용할 것을 권장합니다.</p>
+            </section>
+        </main>
+    </div>
+    <script>
+        const ctx = document.getElementById('salesChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['제품 A', '제품 B', '제품 C'],
+                datasets: [{
+                    label: '매출 (원)',
+                    data: [45000000, 30000000, 25000000],
+                    backgroundColor: ['#38bdf8', '#34d399', '#fbbf24'],
+                    borderRadius: 4,
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+        });
+    <\/script>
+</body>
+</html>`;
+
+    const themeHtmlCode = `<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>분기별 매출 보고서</title>
+    <script src="https://cdn.tailwindcss.com"><\/script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"><\/script>
+</head>
+<body style="background-color: #eef2ff; color: #1e1b4b; font-family: sans-serif;">
+    <div class="max-w-3xl mx-auto p-8">
+        <header class="mb-8 border-b pb-4 border-indigo-200">
+            <h1 class="text-4xl font-bold text-indigo-900">분기별 매출 보고서</h1>
+            <p class="text-lg text-indigo-700">2025년 3분기 실적 분석</p>
+        </header>
+        <main>
+            <section class="mb-8">
+                <h2 class="text-2xl font-bold text-indigo-900 mb-4">핵심 요약</h2>
+                <p class="text-indigo-800 leading-relaxed">3분기 실적은 2분기 대비 총매출이 15% 증가하며 매우 긍정적이었습니다. 이러한 성장은 B 제품의 성공적인 마케팅 캠페인 덕분입니다.</p>
+            </section>
+            <section class="bg-white p-6 rounded-lg shadow-sm border border-indigo-100">
+                 <h2 class="text-2xl font-bold text-indigo-900 mb-4">제품별 매출 분석</h2>
+                 <div class="w-full h-80"><canvas id="salesChart"><\/canvas></div>
+            </section>
+             <section class="mt-8">
+                <h2 class="text-2xl font-bold text-indigo-900 mb-4">결론 및 제언</h2>
+                <p class="text-indigo-800 leading-relaxed">B 제품에 대한 타겟 디지털 광고가 높은 투자 수익률을 기록했습니다. 4분기에는 이 전략을 A와 C 제품에도 확대 적용할 것을 권장합니다.</p>
+            </section>
+        </main>
+    </div>
+    <script>
+        const ctx = document.getElementById('salesChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['제품 A', '제품 B', '제품 C'],
+                datasets: [{
+                    label: '매출 (원)',
+                    data: [45000000, 30000000, 25000000],
+                    backgroundColor: ['#6366f1', '#818cf8', '#a5b4fc'],
+                    borderRadius: 4,
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+        });
+    <\/script>
+</body>
+</html>`;
+
+    const navLinks = document.querySelectorAll('#sidebar-nav a');
+    const contentPanels = document.querySelectorAll('.step-content');
+    const generateBtn = document.getElementById('generate-btn');
+    const generationOutput = document.getElementById('generation-output');
+    const codeOutput = document.getElementById('code-output');
+    const previewFrame = document.getElementById('preview-frame');
+    const refineChartBtn = document.getElementById('refine-chart-btn');
+    const refineThemeBtn = document.getElementById('refine-theme-btn');
+    const refinedCodeOutput = document.getElementById('refined-code-output');
+    const refinedPreviewFrame = document.getElementById('refined-preview-frame');
+
+    const showStep = (step) => {
+        navLinks.forEach(link => link.classList.toggle('active', link.dataset.step === step));
+        contentPanels.forEach(panel => panel.classList.toggle('active', panel.id === `step-${step}-content`));
+    };
+
+    const updatePreview = (code, codeEl, frameEl) => {
+        codeEl.textContent = code;
+        frameEl.srcdoc = code;
+    };
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const step = e.currentTarget.dataset.step;
+            showStep(step);
+            if (step === '3' && !refinedCodeOutput.textContent.includes('<!DOCTYPE')) {
+                 updatePreview(initialHtmlCode, refinedCodeOutput, refinedPreviewFrame);
+            }
+        });
+    });
+
+    generateBtn.addEventListener('click', () => {
+        updatePreview(initialHtmlCode, codeOutput, previewFrame);
+        generationOutput.classList.remove('hidden');
+    });
+
+    refineChartBtn.addEventListener('click', () => {
+        updatePreview(chartHtmlCode, refinedCodeOutput, refinedPreviewFrame);
+    });
+    
+    refineThemeBtn.addEventListener('click', () => {
+        // We'll add the chart first if it isn't there, as the theme sample includes it.
+        if (!refinedCodeOutput.textContent.includes('canvas')) {
+            updatePreview(chartHtmlCode, refinedCodeOutput, refinedPreviewFrame);
+        }
+        setTimeout(() => updatePreview(themeHtmlCode, refinedCodeOutput, refinedPreviewFrame), 100);
+    });
+
+    showStep('1');
+});
+</script>
+
+</body>
+</html>
+
